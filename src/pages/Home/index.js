@@ -50,7 +50,7 @@ export default function Home({ navigation }) {
             value={searchValue}
             autoFocus
             enablesReturnKeyAutomatically
-            autoCapitalize={false}
+            autoCapitalize="none"
             autoCorrect={false}
           />
           <StyledTouchable
