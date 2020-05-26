@@ -19,6 +19,7 @@ export default function List({ dataList }) {
         data={dataList}
         renderItem={({ item }) => <Item user={item} />}
         keyExtractor={(item) => String(item.id)}
+        scrollEnabled={false}
       />
     </View>
   );

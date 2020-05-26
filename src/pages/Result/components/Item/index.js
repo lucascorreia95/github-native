@@ -1,12 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+
+import {
+  AvatarImg,
+  StyledTouchableOpacity,
+  StyledView,
+  StyledTextLogin,
+  StyledTextID,
+} from './styles';
 
 export default function Item({ user }) {
+  const { login, avatar_url: avatarUrl, id } = user;
+
   return (
-    <View>
-      <Text>{user.login}</Text>
-    </View>
+    <StyledView>
+      <StyledTouchableOpacity onPress={() => {}}>
+        <AvatarImg
+          source={{
+            uri: avatarUrl,
+          }}
+        />
+        <StyledView>
+          <StyledTextLogin>{login}</StyledTextLogin>
+          <StyledTextID>ID: {id}</StyledTextID>
+        </StyledView>
+      </StyledTouchableOpacity>
+    </StyledView>
   );
 }
 
