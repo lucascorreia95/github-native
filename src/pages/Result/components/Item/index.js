@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  AvatarImg,
+  StyledAvatarImg,
   StyledTouchableOpacity,
   StyledView,
   StyledTextLogin,
@@ -15,7 +15,7 @@ export default function Item({ user }) {
   return (
     <StyledView>
       <StyledTouchableOpacity onPress={() => {}}>
-        <AvatarImg
+        <StyledAvatarImg
           source={{
             uri: avatarUrl,
           }}
