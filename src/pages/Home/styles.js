@@ -43,4 +43,7 @@ export const StyledTouchable = styled.TouchableOpacity`
   height: 40px;
   padding: 10px;
   border-radius: 4px;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
 `;

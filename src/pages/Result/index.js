@@ -1,37 +1,22 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import parse from 'parse-link-header';
 
 import GitHubAPI from '../../services/github';
+
+import Error from '../../components/Error';
+import Loading from '../../components/Loading';
 import List from './components/List';
 
 import { StyledSafeAreaView } from './styles';
 
-export default function Result({ route }) {
+export default function Result({ route, navigation }) {
   const { searchValue } = route.params;
   const [dataState, setDataState] = useState({});
   const [pagination, setPagination] = useState({});
   const [errorState, setErrorState] = useState(false);
   const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    const getList = async () => {
-      try {
-        const { data, headers } = await GitHubAPI.get(
-          `/search/users?q=${searchValue}`
-        );
-        setDataState(data);
-        setPagination(parse(headers.link));
-        console.log(parse(headers.link));
-      } catch (error) {
-        console.log(error);
-        setErrorState(true);
-      }
-    };
-    getList();
-  }, []);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getList = async () => {
@@ -39,33 +24,36 @@ export default function Result({ route }) {
         const { data, headers } = await GitHubAPI.get(
           `/search/users?q=${searchValue}&page=${page}`
         );
-        setDataState({ ...data, items: [...dataState.items, ...data.items] });
-        console.log('chamou nova página: ', data);
+        setDataState(data);
         setPagination(parse(headers.link));
+        setLoading(false);
       } catch (error) {
-        console.log(error);
+        setLoading(false);
         setErrorState(true);
       }
     };
+    getList();
 
-    if (page > 1) {
-      getList();
+    // just for test
+    if (searchValue === 'errortest') {
+      setErrorState(true);
     }
   }, [page]);
 
-  const handlePressFooter = () => {
-    if (pagination.next) {
-      setPage(pagination.next.page);
-    }
-  };
-
   return (
     <StyledSafeAreaView>
-      {dataState && (
+      {errorState && <Error />}
+
+      {loading && !errorState && <Loading />}
+
+      {dataState && !loading && !errorState && (
         <List
           data={dataState}
           searchValue={searchValue}
-          handlePressFooter={handlePressFooter}
+          pagination={pagination}
+          setPage={setPage}
+          setLoading={setLoading}
+          navigation={navigation}
         />
       )}
     </StyledSafeAreaView>
@@ -74,4 +62,5 @@ export default function Result({ route }) {
 
 Result.propTypes = {
   route: PropTypes.any.isRequired,
+  navigation: PropTypes.any.isRequired,
 };

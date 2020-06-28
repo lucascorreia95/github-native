@@ -13,7 +13,12 @@ export const StyledTouchableOpacity = styled.TouchableOpacity`
 `;
 
 export const StyledView = styled.View`
-  padding: 20px;
+  padding: 15px;
+`;
+
+export const StyledInfoView = styled.View`
+  flex: 1;
+  margin-left: 15px;
 `;
 
 export const StyledTextLogin = styled.Text`

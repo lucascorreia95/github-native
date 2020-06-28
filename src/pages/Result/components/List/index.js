@@ -1,15 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
+import Lottie from 'lottie-react-native';
 
 import Item from '../Item';
-import Footer from '../Footer';
-import Empty from '../Empty';
+import emptyEffect from '../../../../assets/effects/empty.json';
+import Pagination from '../Pagination';
 
-import { StyledView, StyledResultFeedback } from './styles';
+import {
+  StyledView,
+  StyledResultFeedback,
+  StyledEmptyView,
+  StyledEmptyText,
+} from './styles';
 
-export default function List({ data, searchValue, handlePressFooter }) {
+export default function List({
+  data,
+  searchValue,
+  pagination,
+  setPage,
+  setLoading,
+  navigation,
+}) {
   const { items, total_count: totalCount } = data;
+
+  if (items.length === 0) {
+    return (
+      <StyledEmptyView>
+        <StyledEmptyText>Nenhum resultado foi encontrado!</StyledEmptyText>
+        <Lottie
+          autoSize
+          source={emptyEffect}
+          autoPlay
+          loop
+          style={{
+            width: 200,
+            height: 200,
+          }}
+        />
+      </StyledEmptyView>
+    );
+  }
 
   return (
     <StyledView>
@@ -19,18 +50,32 @@ export default function List({ data, searchValue, handlePressFooter }) {
 
       <FlatList
         data={items}
-        renderItem={({ item }) => <Item user={item} />}
+        renderItem={({ item }) => <Item user={item} navigation={navigation} />}
         keyExtractor={(item) => String(item.id)}
         showsVerticalScrollIndicator={false}
-        ListFooterComponent={() => <Footer handlePress={handlePressFooter} />}
-        ListEmptyComponent={Empty}
+        ListFooterComponent={
+          pagination ? (
+            <Pagination
+              data={pagination}
+              setPage={setPage}
+              setLoading={setLoading}
+            />
+          ) : null
+        }
       />
     </StyledView>
   );
 }
 
+List.defaultProps = {
+  pagination: {},
+};
+
 List.propTypes = {
   data: PropTypes.object.isRequired,
   searchValue: PropTypes.string.isRequired,
-  handlePressFooter: PropTypes.func.isRequired,
+  pagination: PropTypes.object,
+  setPage: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  navigation: PropTypes.any.isRequired,
 };

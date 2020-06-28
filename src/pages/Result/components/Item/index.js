@@ -7,23 +7,30 @@ import {
   StyledView,
   StyledTextLogin,
   StyledTextID,
+  StyledInfoView,
 } from './styles';
 
-export default function Item({ user }) {
-  const { login, avatar_url: avatarUrl, id } = user;
+export default function Item({ user, navigation }) {
+  const { login, avatar_url: avatarUrl, id, url } = user;
 
   return (
     <StyledView>
-      <StyledTouchableOpacity onPress={() => {}}>
+      <StyledTouchableOpacity
+        onPress={() => {
+          navigation.navigate('User', {
+            userUrl: url,
+          });
+        }}
+      >
         <StyledAvatarImg
           source={{
             uri: avatarUrl,
           }}
         />
-        <StyledView>
-          <StyledTextLogin>{login}</StyledTextLogin>
+        <StyledInfoView>
+          <StyledTextLogin numberOfLines={1}>{login}</StyledTextLogin>
           <StyledTextID>ID: {id}</StyledTextID>
-        </StyledView>
+        </StyledInfoView>
       </StyledTouchableOpacity>
     </StyledView>
   );
@@ -31,4 +38,5 @@ export default function Item({ user }) {
 
 Item.propTypes = {
   user: PropTypes.object.isRequired,
+  navigation: PropTypes.any.isRequired,
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Feather } from '@expo/vector-icons';
 
 import {
   Image,
@@ -8,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   View,
+  Alert,
 } from 'react-native';
 
 import github from '../../assets/images/GitHub-Mark-120px-plus.png';
@@ -23,6 +25,16 @@ import {
 
 export default function Home({ navigation }) {
   const [searchValue, setSearchValue] = useState('');
+
+  function handlePress() {
+    if (!searchValue) {
+      Alert.alert('Validação', 'Preencha o campo de busca!');
+      return;
+    }
+    navigation.navigate('List', {
+      searchValue,
+    });
+  }
 
   return (
     <KeyboardAvoidingView
@@ -53,13 +65,13 @@ export default function Home({ navigation }) {
             autoCapitalize="none"
             autoCorrect={false}
           />
-          <StyledTouchable
-            onPress={() =>
-              navigation.navigate('List', {
-                searchValue,
-              })
-            }
-          >
+          <StyledTouchable onPress={handlePress}>
+            <Feather
+              name="search"
+              size={18}
+              color="#fff"
+              style={{ marginRight: 4 }}
+            />
             <StyledTextTouchable>Buscar!</StyledTextTouchable>
           </StyledTouchable>
         </StyledView>
