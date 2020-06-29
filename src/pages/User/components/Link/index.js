@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, TouchableOpacity } from 'react-native';
 
 import { StyledText } from './styles';
 
@@ -25,7 +25,11 @@ export default function Link({ url, children }) {
     }
   }, [url]);
 
-  return <StyledText onPress={handlePress}>{children}</StyledText>;
+  return (
+    <TouchableOpacity onPress={handlePress}>
+      <StyledText>{children}</StyledText>
+    </TouchableOpacity>
+  );
 }
 
 Link.propTypes = {
